@@ -35,10 +35,11 @@ void print_wall()
     for (int j=1;j<=m;j++) st[j][0]=st[j][n+1]='|';
     for (int i=1;i<=n;i++)
         for (int j=1;j<=m;j++)st[i][j]=' ';
+    //手动生成墙 要求输入的地图大小为6*6
     st[5][3]=st[5][4]=st[1][4]=st[2][2]=st[4][4]='#';
 }
  
-/*** 首次输出蛇，其中snake[0]代表头 ***/
+/*** 输出蛇，snake[0]代表头 ***/
 void print_snake()
 {
     st[snake[0].x][snake[0].y]='@';
@@ -103,11 +104,11 @@ double go_ahead()
         reward=100;
 //        snake[snake_length-1]=temp;
     }
-    /*** 输出此时蛇状态 ***/
+    /*** 此时蛇状态 ***/
     st[temp.x][temp.y]=' ';
     if(e)print_food();
     st[snake[0].x][snake[0].y]='@';
-    /*** 如果自撞 ***/
+    
     if (!is_correct())
         reward=-2;
     return reward;
@@ -124,6 +125,7 @@ struct Act{
         a[0]=a[1]=a[2]=a[3]=0;
     }
 };
+
 map<string,Act>Qtable;
 double learningRate=0.85;
 double discount=0.9;
@@ -178,7 +180,7 @@ void updateQtable(string s0,string s1,double reward,int act){
 
 int Mxlength;
 void init(){
-    /*** 数据全部初始化，包括蛇长，位置，方向 ***/
+    /*** 数据全部初始化***/
     snake_length=4;
     for (int i=0;i<snake_length;i++)
     {
@@ -190,7 +192,7 @@ void init(){
     print_food();
     print_snake();
 }
-/*** 主函数 ***/
+
 int main(){
     int Time;
     puts("请输入m，n，和学习时长(s)");
@@ -202,9 +204,7 @@ int main(){
     }
     clock_t a,b,T1,T2;
     char ch;
-    /*** 输出初始地图，蛇与食物 ***/
     system("clear");
-    /*** 开始游戏 ***/
     print_wall();
     print_food();
     print_snake();
@@ -221,7 +221,6 @@ int main(){
         if(T2-T1>Time*1000000)sh=1;
     while (1)
     {
-        /*** 调节时间，单位是ms ***/
         a=clock();
         if(sh)
         while (1)
